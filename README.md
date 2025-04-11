@@ -27,11 +27,11 @@ jupyter lab Stream/
 ```
 
 ## HOW TO USE
-# Concept
+### Concept
 The Python script connects to a SEEDLink stream from which blocks of data are received. These blocks are converted and saved to WAV files. Old blocks are deleted regularly. The blocks are then played through Blackhole 64ch and can be received in MaxMSP or anywhere else for further processing --> sonification.
 
 
-# Run script
+### Run script
 Go to Terminal, change directory to ...projectSonification/Stream/ and run the Python script.
 n = block delay (1-90)
 Audio playback will not start until n blocks have been received and saved as WAV files. Set n according to the stream density.
