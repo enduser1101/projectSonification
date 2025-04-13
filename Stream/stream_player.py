@@ -11,45 +11,43 @@ import soundfile as sf
 import sounddevice as sd
 from obspy.clients.seedlink.easyseedlink import EasySeedLinkClient
 
+from scipy.interpolate import interp1d
 
-# 📁 Ordner für WAV-Dateien
+
+# Configuration
 WAV_DIR = "wav_blocks"
-os.makedirs(WAV_DIR, exist_ok=True)
-
-# 🎛 Konfiguration
 DEVICE_NAME = "BlackHole 64ch"
 TARGET_FS = 44100
 BLOCKSIZE = 2048
 MAX_WAV_FILES = 100
-MIN_QUEUE_SECONDS = 1  # min. Sek. Audio, bevor Wiedergabe startet
+MIN_QUEUE_SECONDS = 1  # Minimum seconds of audio before starting playback
 
+# Global audio buffer
+audio_queue = queue.Queue()
 current_block = None
 block_offset = 0
+global_max = 1.0  # prevents divide-by-zero in the beginning
 
-# Audio-Queue für ganze Blöcke
-audio_queue = queue.Queue()
-
-# 🗑 Alte WAV-Dateien beim Start löschen
+# Delete all .wav files at startup
 def delete_all_wav_files():
     for f in glob.glob(os.path.join(WAV_DIR, "*.wav")):
         if f.endswith(".wav"):
             try:
                 os.remove(f)
-                print(f"🗑️  Gelöscht beim Start: {os.path.basename(f)}")
+                print(f"🗑️  Deleted at startup: {os.path.basename(f)}")
             except Exception as e:
-                print(f"⚠️  Fehler beim Löschen von {f}: {e}")
+                print(f"⚠️  Could not delete {f}: {e}")
 
-# 🔁 Max WAV-Dateien im Ordner
+# Limit the number of .wav files to MAX_WAV_FILES
 def enforce_max_wav_files(limit=MAX_WAV_FILES):
     wav_files = sorted(glob.glob(os.path.join(WAV_DIR, "*.wav")), key=os.path.getmtime)
     if len(wav_files) > limit:
         try:
             os.remove(wav_files[0])
-            print(f"♻️  Max erreicht – gelöscht: {os.path.basename(wav_files[0])}")
+            print(f"♻️  Deleted oldest file: {os.path.basename(wav_files[0])}")
         except Exception as e:
-            print(f"⚠️  Fehler beim Löschen: {e}")
+            print(f"⚠️  Could not delete file: {e}")
 
-# 📡 Recorder: SeedLink → WAV
 class WavDumpClient(EasySeedLinkClient):
     def __init__(self, network, station, channel):
         super().__init__("rtserve.iris.washington.edu:18000")
@@ -57,30 +55,47 @@ class WavDumpClient(EasySeedLinkClient):
         self.file_counter = 0
 
     def on_data(self, trace):
+        global global_max
+
         data = trace.data.astype(np.float32)
         fs_in = trace.stats.sampling_rate
 
-        if np.max(np.abs(data)) > 0:
-            data /= np.max(np.abs(data))  # Normalisieren
+        # Update global normalization factor
+        absmax = np.max(np.abs(data))
+        if absmax > global_max:
+            global_max = absmax
 
-        # 🔁 Hochsampeln auf TARGET_FS
+        if global_max > 0:
+            data = data / global_max
+
+        # Interpolate to match target sampling rate
         factor = int(TARGET_FS / fs_in)
         if factor > 1:
-            data = np.repeat(data, factor)
+            t_original = np.linspace(0, 1, len(data), endpoint=False)
+#            t_original = np.linspace(0, 1, len(data), endpoint=True)
 
-        # ✅ Zukunftssicherer UTC-Zeitstempel
+            t_target = np.linspace(0, 1, len(data) * factor, endpoint=False)
+
+            interpolator = interp1d(
+                t_original, data, kind='linear',
+                bounds_error=False, fill_value="extrapolate"
+            )
+            data = interpolator(t_target).astype(np.float64)
+
+        # Create filename with UTC timestamp
         ts = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S")
         fname = f"block_{self.file_counter:04d}_{ts}.wav"
         filepath = os.path.join(WAV_DIR, fname)
-
-        sf.write(filepath, data, samplerate=TARGET_FS)
-        print(f"💾 Gespeichert: {os.path.basename(filepath)} ({len(data)} samples @ {TARGET_FS} Hz)")
+    
+        # Save as WAV file
+        sf.write(filepath, data, samplerate=TARGET_FS, subtype='PCM_24')  # or PCM_16
+        print(f"💾 Saved: {os.path.basename(filepath)} ({len(data)} samples @ {TARGET_FS} Hz)")
 
         self.file_counter += 1
         enforce_max_wav_files()
 
 
-# 📥 Lade WAV-Blöcke in Queue (ganz)
+# Loads blocks into the audio queue in order, starting from the -n-th latest
 def playback_loader(block_delay=1):
     played = set()
     current_index = None
@@ -95,24 +110,24 @@ def playback_loader(block_delay=1):
             if current_index < len(wav_files):
                 target_file = wav_files[current_index]
                 if target_file not in played:
-                    print(f"📥 Lade in Audio-Queue: {os.path.basename(target_file)}")
+                    print(f"📥 Queueing block: {os.path.basename(target_file)}")
                     try:
                         data, fs = sf.read(target_file, dtype='float32')
                         audio_queue.put(data)
                         played.add(target_file)
                         current_index += 1
                     except Exception as e:
-                        print(f"⚠️ Fehler beim Lesen: {target_file} → {e}")
+                        print(f"⚠️ Error reading {target_file}: {e}")
                         time.sleep(1)
                 else:
                     time.sleep(0.1)
             else:
                 time.sleep(0.5)
         else:
-            print("⏳ Warte auf genug Blöcke...")
+            print("⏳ Waiting for more blocks...")
             time.sleep(1)
 
-# 🔊 Audio-Callback (zieht aus Queue Blöcke)
+# Sounddevice callback: fills outdata with audio from the queue
 def audio_callback(outdata, frames, time_info, status):
     global current_block, block_offset
 
@@ -128,6 +143,7 @@ def audio_callback(outdata, frames, time_info, status):
                 current_block = audio_queue.get_nowait()
                 block_offset = 0
             except queue.Empty:
+                output[i:] = 0.0
                 print("⚠️ Audio queue underrun!")
                 break
 
@@ -140,30 +156,25 @@ def audio_callback(outdata, frames, time_info, status):
 
     outdata[:] = output.reshape(-1, 1)
 
-
-# 🚀 Start Recorder & Player
+# Start everything: recorder, loader, audio
 def start(block_delay):
     delete_all_wav_files()
 
-    # 📡 Recorder starten
     threading.Thread(
         target=lambda: WavDumpClient("A2", "AGVN", "HHE").run(),
         daemon=True
     ).start()
 
-    # 🎧 Player/Loader starten
     threading.Thread(
         target=lambda: playback_loader(block_delay),
         daemon=True
     ).start()
 
-    # 🕐 Warte bis Queue gefüllt ist
-    print(f"⏳ Warte auf mindestens {MIN_QUEUE_SECONDS}s Audiopuffer...")
+    print(f"⏳ Waiting for {MIN_QUEUE_SECONDS}s of audio in queue...")
     while audio_queue.qsize() * BLOCKSIZE < MIN_QUEUE_SECONDS * TARGET_FS:
         time.sleep(0.1)
-    print("✅ Audio-Queue bereit. Starte Wiedergabe...")
+    print("✅ Audio buffer ready. Starting playback...")
 
-    # 🎶 Audio-Ausgabe starten
     with sd.OutputStream(
         samplerate=TARGET_FS,
         channels=1,
@@ -175,16 +186,16 @@ def start(block_delay):
         while True:
             time.sleep(0.1)
 
-# 🧪 CLI
+# CLI entry point
 if __name__ == "__main__":
     try:
         block_n = int(sys.argv[1]) if len(sys.argv) > 1 else 1
     except ValueError:
-        print("❌ Ungültiger Wert für n. Bitte gib eine ganze Zahl an.")
+        print("❌ Invalid argument. Please pass an integer for 'n'.")
         sys.exit(1)
 
-    print(f"🎬 Starte Recorder & Player mit Delay n = {block_n}")
+    print(f"🎬 Starting recorder & player with block delay n = {block_n}")
     try:
         start(block_n)
     except KeyboardInterrupt:
-        print("\n🛑 Manuell gestoppt.")
+        print("\n🛑 Stopped by user.")
