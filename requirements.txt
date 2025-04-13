@@ -3,4 +3,6 @@ scipy
 jupyterlab
 sounddevice
 obspy
-
+soundfile
+resampy
+numba
