@@ -46,7 +46,7 @@ cat status.json
 
 python streamplayer3.py --station 03
 ```
-You can also view stations.json and status.json in the MaxMSP patch (monitor.maxpat).
+You can also view stations.json and status.json in the MaxMSP patch (monitor.maxpat) which is included in the "wav_blocks" folder.
 
 
 
