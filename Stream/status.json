@@ -4,16 +4,16 @@
     "block_delay": 20,
     "target_fs": 44100,
     "blocksize": 2048,
-    "max_wav_files": 30,
-    "min_queue_seconds": 20.0,
+    "max_wav_files": 100,
+    "min_queue_seconds": 30.0,
     "device": "BlackHole 64ch",
     "taper": 0
   },
-  "uptime": "00:00:01:00",
-  "queue_duration_sec": 0.0,
-  "queue_duration_avg_sec": 0.0,
-  "block_count": 3,
-  "block_saved_total": 3,
+  "uptime": "00:00:10:36",
+  "queue_duration_sec": 354.95,
+  "queue_duration_avg_sec": 139.67,
+  "block_count": 31,
+  "block_saved_total": 31,
   "queue_empty_time_total_sec": 0.0,
   "stream_gap_total_sec": 0.0
 }
