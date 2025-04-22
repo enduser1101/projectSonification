@@ -40,9 +40,13 @@ Use --help to see command line arguments for this script.
 python streamplayer3.py --help
 ```
 
-Use --station to choose a SEEDLink server from stations.json
+View the contents of stations.json and use --station to choose a station.
 ```
+cat status.json
+
 python streamplayer3.py --station 03
 ```
+You can also view stations.json and status.json in the MaxMSP patch (monitor.maxpat).
+
 
 
