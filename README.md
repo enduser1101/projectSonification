@@ -6,7 +6,8 @@
 Install and activate python virtual environment with
 ```
 python3 -m venv venv
-. venv/bin/activate
+
+source venv/bin/activate
 ```
 
 Install required packages:
@@ -19,12 +20,6 @@ Install Blackhole https://github.com/ExistentialAudio/BlackHole
 brew install blackhole-64ch
 ```
 
-## Prototyping
-
-Run jupyter notebook with
-```
-jupyter lab Stream/
-```
 
 ## HOW TO USE
 ### Concept
@@ -32,12 +27,22 @@ The Python script connects to a SEEDLink stream from which blocks of data are re
 
 
 ### Run script
-Go to Terminal, change directory to ...projectSonification/Stream/ and run the Python script.
-n = block delay (1-90)
-Audio playback will not start until n blocks have been received and saved as WAV files. Set n according to the stream density.
+Go to Terminal, change directory to ...projectSonification/Stream/, activate python virtual environment and run the Python script.
 ```
 cd ...projectSonification/Stream/
-python3 stream_player.py n
+source venv/bin/activate
+python streamplayer18.py --station 01
 ```
 Manually stop script by pressing "control + c"
+
+Use --help to see command line arguments for this script.
+```
+python streamplayer3.py --help
+```
+
+Use the argument --station to choose a SEEDLink server from stations.json
+```
+python streamplayer18.py --station 03
+```
+
 
