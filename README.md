@@ -3,7 +3,7 @@
 
 ## Prerequisites
 
-Install and activate python virtual environment with
+Install and activate python virtual environment:
 ```
 python3 -m venv venv
 
@@ -15,7 +15,7 @@ Install required packages:
 pip install -r requirements.txt
 ```
 
-Install Blackhole https://github.com/ExistentialAudio/BlackHole
+Install Blackhole (https://github.com/ExistentialAudio/BlackHole):
 ```
 brew install blackhole-64ch
 ```
@@ -40,7 +40,7 @@ Use --help to see command line arguments for this script.
 python streamplayer3.py --help
 ```
 
-Use the argument --station to choose a SEEDLink server from stations.json
+Use --station to choose a SEEDLink server from stations.json
 ```
 python streamplayer18.py --station 03
 ```
