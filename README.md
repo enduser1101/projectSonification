@@ -31,7 +31,7 @@ Go to Terminal, change directory to ...projectSonification/Stream/, activate pyt
 ```
 cd ...projectSonification/Stream/
 source venv/bin/activate
-python streamplayer18.py --station 01
+python streamplayer3.py --station 01
 ```
 Manually stop script by pressing "control + c"
 
@@ -42,7 +42,7 @@ python streamplayer3.py --help
 
 Use --station to choose a SEEDLink server from stations.json
 ```
-python streamplayer18.py --station 03
+python streamplayer3.py --station 03
 ```
 
 
