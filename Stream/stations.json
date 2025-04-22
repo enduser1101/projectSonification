@@ -1,0 +1,99 @@
+{
+  "01": {
+    "name": "GEOFON Station Kabul, Afghanistan",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "KBU",
+    "channel": "BHZ",
+    "latitude": "34.52° N",
+    "longitude": "69.13° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=KBU"
+  },
+  "02": {
+    "name": "DMH/GEOFON Station Naypyitaw, Myanmar",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "NPW",
+    "channel": "BHZ",
+    "latitude": "19.78° N",
+    "longitude": "96.14° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=NPW"
+  },
+  "03": {
+    "name": "GEOFON Station Dhamar, Yemen",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "DAMY",
+    "channel": "BHZ",
+    "latitude": "14.56° N",
+    "longitude": "44.39° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=DAMY"
+  },
+  "04": {
+    "name": "DESERVE Station Al Uja, Palestine Territories",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "UJAP",
+    "channel": "BHZ",
+    "latitude": "31.95° N",
+    "longitude": "35.46° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=UJAP"
+  },
+  "05": {
+    "name": "DESERVE Station Salfit, Palestine Territories",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "SALP",
+    "channel": "GHZ",
+    "latitude": "32.07° N",
+    "longitude": "35.19° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=SALP"
+  },
+  "06": {
+    "name": "GEOFON JSO/DESERVE Station Ghor Haditha, Jordan",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "GHAJ",
+    "channel": "BHZ",
+    "latitude": "31.3° N",
+    "longitude": "35.57° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=GHAJ"
+  },
+  "07": {
+    "name": "GEOFON Station Eilat, Israel",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "EIL",
+    "channel": "BHZ",
+    "latitude": "29.67° N",
+    "longitude": "34.95° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=EIL"
+  },
+  "08": {
+    "name": "GEOFON JSO/DESERVE Station Balqa, Jordan",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "BALJ",
+    "channel": "BHZ",
+    "latitude": "32.09° N",
+    "longitude": "35.64° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=BALJ"
+  },
+  "09": {
+    "name": "DESERVE Station Mazada, Israel",
+    "server": "geofon.gfz.de:18000",
+    "network": "GE",
+    "station": "MSBI",
+    "channel": "BHZ",
+    "latitude": "31.31° N",
+    "longitude": "35.36° E",
+    "url": "https://geofon.gfz.de/waveform/liveseis.php?station=MSBI"
+  },
+  "10": {
+    "name": "Test Station",
+    "server": "rtserve.iris.washington.edu:18000",
+    "network": "A2",
+    "station": "AGVN",
+    "channel": "HHE"
+  }
+}

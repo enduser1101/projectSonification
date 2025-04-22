@@ -1,6 +1,5 @@
 numpy
-scipy
-jupyterlab
+soundfile
 sounddevice
 obspy
-
+resampy

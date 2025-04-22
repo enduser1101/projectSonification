@@ -1,0 +1,19 @@
+{
+  "args": {
+    "station_id": "08",
+    "block_delay": 1,
+    "target_fs": 44100,
+    "blocksize": 2048,
+    "max_wav_files": 30,
+    "min_queue_seconds": 20.0,
+    "device": "BlackHole 64ch",
+    "taper": 0
+  },
+  "uptime": "00:00:07:21",
+  "queue_duration_sec": 0.0,
+  "queue_duration_avg_sec": 7.39,
+  "block_count": 24,
+  "block_saved_total": 24,
+  "queue_empty_time_total_sec": 230.44,
+  "stream_gap_total_sec": 0.0
+}
