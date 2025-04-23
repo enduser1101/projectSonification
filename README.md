@@ -42,7 +42,7 @@ python streamplayer3.py --help
 
 View the contents of stations.json and use --station to choose a station.
 ```
-cat status.json
+cat stations.json
 
 python streamplayer3.py --station 03
 ```
