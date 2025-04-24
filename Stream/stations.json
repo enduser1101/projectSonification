@@ -44,7 +44,7 @@
     "server": "geofon.gfz.de:18000",
     "network": "GE",
     "station": "SALP",
-    "channel": "GHZ",
+    "channel": "BHZ",
     "latitude": "32.07° N",
     "longitude": "35.19° E",
     "url": "https://geofon.gfz.de/waveform/liveseis.php?station=SALP"

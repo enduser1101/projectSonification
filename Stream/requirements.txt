@@ -3,3 +3,4 @@ soundfile
 sounddevice
 obspy
 resampy
+rich

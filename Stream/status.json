@@ -1,6 +1,6 @@
 {
   "args": {
-    "station_id": "08",
+    "station_id": "02",
     "block_delay": 20,
     "target_fs": 44100,
     "blocksize": 2048,
@@ -9,11 +9,11 @@
     "device": "BlackHole 64ch",
     "taper": 0
   },
-  "uptime": "00:00:10:36",
-  "queue_duration_sec": 354.95,
-  "queue_duration_avg_sec": 139.67,
-  "block_count": 31,
-  "block_saved_total": 31,
+  "uptime": "00:00:08:28",
+  "queue_duration_sec": 307.23,
+  "queue_duration_avg_sec": 107.28,
+  "block_count": 30,
+  "block_saved_total": 30,
   "queue_empty_time_total_sec": 0.0,
   "stream_gap_total_sec": 0.0
 }
