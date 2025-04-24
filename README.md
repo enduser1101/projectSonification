@@ -42,10 +42,19 @@ python streamplayer3.py --help
 
 View the contents of stations.json and use --station to choose a station.
 ```
-cat status.json
+cat stations.json
 
 python streamplayer3.py --station 03
 ```
+
+View status.json in a second Terminal window.
+```
+cd ...projectSonification/Stream/
+python statusviewer.py
+```
+
+
+
 You can also view stations.json and status.json in the MaxMSP patch (monitor.maxpat) which is included in the "wav_blocks" folder.
 
 
