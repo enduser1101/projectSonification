@@ -2,6 +2,9 @@
 
 
 ## Prerequisites
+User guide for Terminal on Mac: https://macpaw.com/how-to/use-terminal-on-mac
+Also see: https://support.apple.com/de-de/guide/terminal/welcome/mac
+Also see: https://ohmyz.sh/
 
 Go to the folder "...projectSonification/Stream/", install and activate python virtual environment:
 ```
@@ -44,7 +47,7 @@ cd ...projectSonification/Stream/
 source venv/bin/activate
 python streamplayer3.py --station 01
 ```
-Manually stop script by pressing "control + c"
+Manually stop script by pressing "control + c". If the script runs into an error and you can't stop it manually, close the Terminal window.
 
 Use "--help" to see command line arguments for this script.
 ```
