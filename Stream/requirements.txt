@@ -4,3 +4,4 @@ sounddevice
 obspy
 resampy
 rich
+pandas
