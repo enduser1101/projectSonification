@@ -6,6 +6,21 @@ __pycache__/
 # C extensions
 *.so
 
+# Virtuelle Umgebung
+myenv311/
+.venv/
+
+# Python Caches
+__pycache__/
+*.pyc
+
+# Daten
+*.mseed
+
+# System-Dateien
+.DS_Store
+
+
 # Distribution / packaging
 .Python
 build/
